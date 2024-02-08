@@ -8,9 +8,21 @@ class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
 
   @override
+  void onCreate(BlocBase<dynamic> bloc) {
+    log('onCreate(${bloc.runtimeType}, $bloc)');
+    super.onCreate(bloc);
+  }
+
+  @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
     log('onChange(${bloc.runtimeType}, $change)');
+  }
+
+  @override
+  void onClose(BlocBase<dynamic> bloc) {
+    log('onClose(${bloc.runtimeType}, $bloc)');
+    super.onClose(bloc);
   }
 
   @override
@@ -28,6 +40,5 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   Bloc.observer = const AppBlocObserver();
 
   // Add cross-flavor configuration here
-
   runApp(await builder());
 }

@@ -1,13 +1,29 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+enum Flavor{
+  production,
+  staging,
+  developmenmt,
+}
+
 class Api{
-  final _dio = Dio(); // With default `Options`.
+  // development url
+  late Uri baseUrl;
+
+  Api({required Flavor flavor}) {
+    if(flavor == Flavor.production) {
+      baseUrl = Uri.parse('https://api.pub.dev');
+    } else if(flavor == Flavor.staging) {
+      baseUrl = Uri.parse('https://api.pub.dev');
+    } else {
+      baseUrl = Uri.parse('https://api.pub.dev');
+    }
+  }
+  final _dio = Dio();
 
   void configureDio() {
-    // Set default configs
-    _dio.options.baseUrl = 'https://api.pub.dev';
-
+    _dio.options.baseUrl = baseUrl.toString();
     _dio.options.connectTimeout = const Duration(seconds: 5);
     _dio.options.receiveTimeout = const Duration(seconds: 5);
     _dio.interceptors.add(PrettyDioLogger());
