@@ -1,27 +1,23 @@
 import 'package:api/src/api.dart';
 import 'package:api/src/models/market.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 
 class MarketsRepository {
-  final Api _api = Api(flavor: Flavor.developmenmt);
-
-  Future<List<Market>> get() async {
-    try {
-      Response response = await _api.sendRequest.get("/trade-pair/market/list");
-      if (response.statusCode! <= 200) {
-        return compute(_parse, response.data);
-      } else {
-        throw Exception('Failed to load posts.');
-      }
-    } catch (ex) {
-      rethrow;
-    }
+  MarketsRepository({
+    required this.flavor,
+  }) {
+    _api = Api(flavor: flavor);
   }
 
-  static List<Market> _parse(dynamic responseBody) {
-    List<dynamic> maps = responseBody["Data"];
+  final Flavor flavor;
+  late Api _api;
 
-    return maps.map<Market>((json) => Market.fromJson(json)).toList();
+  Future<Market> get() async {
+    try {
+      Response response = await _api.sendRequest.get("/trade-pair/market/list");
+      return marketFromJson(response.toString());
+    } catch (exception) {
+      return Future.error(exception.toString());
+    }
   }
 }

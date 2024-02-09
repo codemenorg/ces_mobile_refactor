@@ -6,13 +6,13 @@ sealed class MarketsState {}
 final class MarketsLoading extends MarketsState {}
 
 final class MarketsLoadingError extends MarketsState {
-  MarketsLoadingError({required this.error});
-  
+  MarketsLoadingError(this.error);
+
   final String error;
 }
 
 final class MarketsLoaded extends MarketsState {
-  MarketsLoaded({required this.markets});
+  MarketsLoaded(this.market);
 
-  final List<Market> markets;
+  final Market market;
 }

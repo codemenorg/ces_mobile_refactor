@@ -4,7 +4,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 enum Flavor{
   production,
   staging,
-  developmenmt,
+  development,
 }
 
 class Api{

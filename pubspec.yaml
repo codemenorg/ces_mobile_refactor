@@ -7,10 +7,10 @@ environment:
   sdk: ">=3.2.6 <4.0.0"
 
 dependencies:
-  app_ui:
-    path: packages/app_ui
   api:
     path: packages/api
+  app_ui:
+    path: packages/app_ui
   bloc: ^8.1.2
   easy_splash_screen: ^1.0.4
   flutter:

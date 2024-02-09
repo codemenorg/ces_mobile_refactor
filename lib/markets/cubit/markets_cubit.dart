@@ -5,19 +5,20 @@ import 'package:meta/meta.dart';
 part 'markets_state.dart';
 
 class MarketsCubit extends Cubit<MarketsState> {
-  MarketsCubit() : super(MarketsLoading()){
-    fetch();
+  MarketsCubit() : super(MarketsLoading()) {
+    get();
   }
 
-  MarketsRepository repository = MarketsRepository();
+  MarketsRepository marketRepository = MarketsRepository(
+    flavor: Flavor.production,
+  );
 
-  Future<void> fetch() async {
+  Future<void> get() async {
     try {
-      final List<Market> markets = await repository.get();
-      emit(MarketsLoaded(markets: markets));
-    } catch (ex) {
-      emit(MarketsLoadingError(error: ex.toString()));
-      print(ex.toString());
+      final market = await marketRepository.get();
+      emit(MarketsLoaded(market));
+    } catch (exception) {
+      emit(MarketsLoadingError(exception.toString()));
     }
   }
 }
