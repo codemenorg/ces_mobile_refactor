@@ -1,4 +1,5 @@
 import 'package:api/api.dart';
+import 'package:app_ui/app_ui.dart';
 import 'package:ces/l10n/l10n.dart';
 import 'package:ces/markets/cubit/markets_cubit.dart';
 import 'package:flutter/material.dart';
@@ -59,12 +60,49 @@ class MarketsView extends StatelessWidget {
   Widget buildPostListView(List<Datum> markets) {
     return Column(
       children: [
+        Container(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          decoration:
+              const BoxDecoration(color: Color.fromARGB(255, 222, 230, 235)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Pair / Vol',
+                style: UITextStyle.subtitle2.copyWith(),
+              ),
+              const Spacer(),
+              Text(
+                'Price',
+                style: UITextStyle.subtitle2.copyWith(),
+              ),
+              const SizedBox(
+                width: AppSpacing.md,
+              ),
+              Text(
+                'Change',
+                style: UITextStyle.subtitle2.copyWith(),
+              ),
+            ],
+          ),
+        ),
         Expanded(
-          child: ListView.builder(
+          child: ListView.separated(
+            separatorBuilder: (context, index) => const Column(
+              children: [
+                SizedBox(
+                  height: AppSpacing.sm,
+                ),
+                Divider(),
+                SizedBox(
+                  height: AppSpacing.sm,
+                ),
+              ],
+            ),
+            padding: const EdgeInsets.all(AppSpacing.md),
             itemCount: markets.length,
             itemBuilder: (context, index) {
               final market = markets[index];
-          
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -73,18 +111,24 @@ class MarketsView extends StatelessWidget {
                     children: [
                       Text(
                         market.name,
-                        style: const TextStyle(color: Colors.white),
+                        style: UITextStyle.subtitle2
+                            .copyWith(color: AppColors.black),
                       ),
                       Text(
                         market.baseVolume,
-                        style: const TextStyle(color: Colors.white),
+                        style: UITextStyle.subtitle2
+                            .copyWith(color: AppColors.black),
                       ),
                     ],
                   ),
                   const Spacer(),
                   Text(
-                    market.price,
-                    style: const TextStyle(color: Colors.white),
+                    formatNum(market.price),
+                    style:
+                        UITextStyle.subtitle2.copyWith(color: AppColors.black),
+                  ),
+                  const SizedBox(
+                    width: AppSpacing.md,
                   ),
                   Container(
                     width: 60,
@@ -94,7 +138,7 @@ class MarketsView extends StatelessWidget {
                       color: Colors.blue,
                     ),
                     child: Text(
-                      market.dailyChange,
+                      '${formatNum(market.dailyChange)}%',
                       textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.white),
                     ),
@@ -106,5 +150,28 @@ class MarketsView extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String formatNum(String value) {
+    // Convert the double to a string
+    String stringValue = value.toString();
+
+    // Split the string into parts before and after the decimal point
+    List<String> parts = stringValue.split('.');
+
+    // Take the full number of digits before the decimal point
+    String result = parts[0];
+
+    // If there is a decimal part, take up to 8 digits
+    if (parts.length > 1) {
+      String decimalPart = parts[1].substring(0, 8);
+
+      // Check if all digits in the decimal part are 0
+      if (int.parse(decimalPart) != 0) {
+        result += '.' + decimalPart;
+      }
+    }
+
+    return result;
   }
 }
