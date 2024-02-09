@@ -13,21 +13,21 @@ class Api{
 
   Api({required Flavor flavor}) {
     if(flavor == Flavor.production) {
-      baseUrl = Uri.parse('https://api.pub.dev');
+      baseUrl = Uri.parse('http://api-v2.ces.codemen.org/api/v1');
+      
     } else if(flavor == Flavor.staging) {
-      baseUrl = Uri.parse('https://api.pub.dev');
+      baseUrl = Uri.parse('http://api-v2.ces.codemen.org/api/v1');
     } else {
-      baseUrl = Uri.parse('https://api.pub.dev');
+      baseUrl = Uri.parse('http://api-v2.ces.codemen.org/api/v1');
     }
-  }
-  final _dio = Dio();
 
-  void configureDio() {
     _dio.options.baseUrl = baseUrl.toString();
     _dio.options.connectTimeout = const Duration(seconds: 5);
     _dio.options.receiveTimeout = const Duration(seconds: 5);
     _dio.interceptors.add(PrettyDioLogger());
+    
   }
+  final _dio = Dio();
   
   Dio get sendRequest => _dio;
 
