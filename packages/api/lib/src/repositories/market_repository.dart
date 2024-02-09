@@ -20,7 +20,7 @@ class MarketsRepository {
   }
 
   static List<Market> _parse(dynamic responseBody) {
-    List<dynamic> maps = responseBody;
+    List<dynamic> maps = responseBody["Data"];
 
     return maps.map<Market>((json) => Market.fromJson(json)).toList();
   }

@@ -59,16 +59,75 @@ class MarketsView extends StatelessWidget {
   }
 
   Widget buildPostListView(List<Market> markets) {
-    return ListView.builder(
-      itemCount: markets.length,
-      itemBuilder: (context, index) {
-        Market market = markets[index];
-
-        return ListTile(
-          title: Text(market.name.toString()),
-          subtitle: Text(market.price.toString()),
-        );
-      },
+    return Column(
+      children: [
+        Container(
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(color: Color.fromARGB(255, 222, 230, 235)),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Pair / Vol',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    Spacer(),
+                    Text(
+                      'Price',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    SizedBox(width: 10,),
+                    Text(
+                      'Change',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+        ListView.builder(
+          itemCount: markets.length,
+          itemBuilder: (context, index) {
+            Market market = markets[index];
+        
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      market.name.toString(),
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      market.baseVolume.toString(),
+                      style: const TextStyle(color: Colors.white),
+                    )
+                  ],
+                ),
+                const Spacer(),
+                Text(
+                  market.price.toString(),
+                  style: const TextStyle(color: Colors.white),
+                ),
+                Container(
+                  width: 60,
+                  padding: const EdgeInsets.all(5),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    color: Colors.blue,
+                  ),
+                  child: Text(
+                    market.dailyChange.toString(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 }
