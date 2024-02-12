@@ -2,6 +2,7 @@ import 'package:api/api.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:ces/l10n/l10n.dart';
 import 'package:ces/markets/cubit/markets_cubit.dart';
+import 'package:ces/markets/view/maket_trade_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,7 +26,7 @@ class MarketsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
+      appBar: AppBar(title: Text(l10n.marketAppBarTitle)),
       body: SafeArea(
         child: BlocConsumer<MarketsCubit, MarketsState>(
           listener: (context, state) {
@@ -77,10 +78,10 @@ class MarketsView extends StatelessWidget {
                 style: UITextStyle.subtitle2.copyWith(),
               ),
               const SizedBox(
-                width: AppSpacing.md,
+                width: AppSpacing.lg,
               ),
               Text(
-                'Change',
+                '24h Change',
                 style: UITextStyle.subtitle2.copyWith(),
               ),
             ],
@@ -103,47 +104,59 @@ class MarketsView extends StatelessWidget {
             itemCount: markets.length,
             itemBuilder: (context, index) {
               final market = markets[index];
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        market.name,
-                        style: UITextStyle.subtitle2
-                            .copyWith(color: AppColors.black),
-                      ),
-                      Text(
-                        market.baseVolume,
-                        style: UITextStyle.subtitle2
-                            .copyWith(color: AppColors.black),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Text(
-                    formatNum(market.price),
-                    style:
-                        UITextStyle.subtitle2.copyWith(color: AppColors.black),
-                  ),
-                  const SizedBox(
-                    width: AppSpacing.md,
-                  ),
-                  Container(
-                    width: 60,
-                    padding: const EdgeInsets.all(5),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Colors.blue,
+              return InkWell(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    MarketsTradePage.route,
+                    arguments: MarketTrades(
+                      marketId: market.id,
                     ),
-                    child: Text(
-                      '${formatNum(market.dailyChange)}%',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white),
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          market.name,
+                          style: UITextStyle.subtitle2
+                              .copyWith(color: AppColors.black),
+                        ),
+                        Text(
+                          market.baseVolume,
+                          style: UITextStyle.subtitle2
+                              .copyWith(color: AppColors.black),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    const Spacer(),
+                    Text(
+                      formatNum(market.price),
+                      style: UITextStyle.subtitle2
+                          .copyWith(color: AppColors.black),
+                    ),
+                    const SizedBox(
+                      width: AppSpacing.xxlg,
+                    ),
+                    Container(
+                      width: 60,
+                      padding: const EdgeInsets.all(5),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        color: Colors.blue,
+                      ),
+                      child: Text(
+                        '${formatString(market.dailyChange)}%',
+                        // market.id,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
               );
             },
           ),
@@ -152,6 +165,7 @@ class MarketsView extends StatelessWidget {
     );
   }
 
+  //format price
   String formatNum(String value) {
     // Convert the double to a string
     String stringValue = value.toString();
@@ -173,5 +187,14 @@ class MarketsView extends StatelessWidget {
     }
 
     return result;
+  }
+
+  //format changes
+  String formatString(String numberString) {
+    double number = double.parse(numberString);
+    String formattedNumber = number.toStringAsFixed(2);
+    formattedNumber =
+        formattedNumber.replaceAll(RegExp(r'(\.0+|(?<=\.\d)0+)$'), '');
+    return formattedNumber;
   }
 }
