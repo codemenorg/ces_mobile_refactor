@@ -170,7 +170,6 @@ class MarketsTradeView extends StatelessWidget {
           ),
           // Candle Chart
           Expanded(
-            flex: 1, // Adjust the flex value as needed
             child: Container(
               // Replace this with your candle chart widget
               color: Colors.blue,
@@ -193,9 +192,6 @@ class MarketsTradeView extends StatelessWidget {
                     child: TabBarView(
                       children: [
                         // Order Book content
-                        Center(
-                          child: Text('Order Book Content'),
-                        ),
                         // Market Trade content
                         Center(
                           child: Text('Market Trade Content'),

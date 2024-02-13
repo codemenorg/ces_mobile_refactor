@@ -6,10 +6,15 @@ import 'package:ces/markets/view/maket_trade_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MarketsPage extends StatelessWidget {
+class MarketsPage extends StatefulWidget {
   const MarketsPage({super.key});
-  static const route = '/';
+  static const route = '/market';
 
+  @override
+  State<MarketsPage> createState() => _MarketsPageState();
+}
+
+class _MarketsPageState extends State<MarketsPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
