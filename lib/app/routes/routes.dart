@@ -2,6 +2,7 @@ import 'package:api/api.dart';
 import 'package:ces/counter/counter.dart';
 import 'package:ces/home/home.dart';
 import 'package:ces/markets/markets.dart';
+import 'package:ces/profile/profile.dart';
 import 'package:flutter/material.dart';
 
 import '../../navigation/view/bottom_nav_bar.dart';
@@ -22,6 +23,10 @@ class Routes {
       case HomePage.route:
         return MaterialPageRoute(
           builder: (context) => const HomePage(),
+        );
+      case ProfilePage.route:
+        return MaterialPageRoute(
+          builder: (context) => const ProfilePage(),
         );
       case MarketsPage.route:
         return MaterialPageRoute(

@@ -7,5 +7,9 @@
     "marketAppBarTitle": "Mercado",
     "@marketAppBarTitle": {
         "description": "Texto mostrado en la AppBar de la página del Mercado"
+    },
+    "profileAppBarTitle": "Perfil",
+    "@profileAppBarTitle": {
+        "description": "Texto mostrado en la AppBar de la página del Perfil"
     }
 }

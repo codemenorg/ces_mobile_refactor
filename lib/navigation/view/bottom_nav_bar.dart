@@ -7,6 +7,8 @@ import 'package:ces/markets/view/markets_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../profile/view/profile_page.dart';
+
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({
     super.key,
@@ -26,14 +28,13 @@ class _NavigationScreenState extends State<NavigationScreen> {
   int _colorIndex = 0;
 
   final bool _isFisrtBuild = true;
-  //final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   final List<StatefulWidget> _screens = [
     const HomePage(),
     const MarketsPage(),
     const CounterPage(),
     const MarketsPage(),
-    const CounterPage(),
+    const ProfilePage(),
   ];
 
   @override
