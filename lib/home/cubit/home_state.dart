@@ -11,4 +11,8 @@ final class HomeLoadingError extends HomeState {
   final String error;
 }
 
-final class HomeLoaded extends HomeState {}
+final class HomeLoaded extends HomeState {
+  HomeLoaded(this.home);
+
+  final Home home;
+}

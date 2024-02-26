@@ -11,5 +11,13 @@
     "profileAppBarTitle": "Profile",
     "@profileAppBarTitle": {
         "description": "Text shown in the AppBar of the Profile Page"
+    },
+    "walletAppBarTitle": "Wallet",
+    "@walletAppBarTitle": {
+        "description": "Text shown in the AppBar of the Wallet Page"
+    },
+    "homeAppBarTitle": "Home",
+    "@homeAppBarTitle": {
+        "description": "Text shown in the AppBar of the Home Page"
     }
 }

@@ -1,13 +1,12 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:ces/l10n/l10n.dart';
+import 'package:ces/profile/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/profile_cubit.dart';
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
-  static const route = '/Profile';
+  static const route = '/profile';
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -30,99 +29,283 @@ class ProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.profileAppBarTitle)),
-      body: ListView(
-        shrinkWrap: true,
-        children: [
-          // Slider at the top
-          const SizedBox(
-            height: 150,
-            child: Placeholder(), // Replace with your slider widget
-          ),
-          const SizedBox(
-            height: AppSpacing.lg,
-          ),
-          // Horizontal list with items
-          SizedBox(
-            height: 120,
-            child: ListView.separated(
+      // appBar: AppBar(title: Text(l10n.profileAppBarTitle)),
+      body: BlocConsumer<ProfileCubit, ProfileState>(
+        listener: (context, state) {
+          if (state is ProfileLoadingError) {
+            final snackBar = SnackBar(
+              content: Text(state.error),
+              backgroundColor: Colors.red,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+        },
+        builder: (context, state) {
+          if (state is ProfileLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state is ProfileLoaded) {
+            final userInfo = state.profile.data!.getProfileById!;
+            return ListView(
+              shrinkWrap: true,
               padding: const EdgeInsets.all(20),
-              separatorBuilder: (context, index) => const SizedBox(
-                width: AppSpacing.xxlg,
-              ),
-              scrollDirection: Axis.horizontal,
-              itemCount: 5, // Replace with your item count
-              itemBuilder: (context, index) {
-                return const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Crypto Name'),
-                    Text(r'Price: $100'),
-                    Text('24h Change: +5%'),
-                  ],
-                );
-              },
-            ),
-          ),
-          // Custom header row
-          Container(
-            padding: const EdgeInsets.all(16),
-            child: const Row(
               children: [
-                Text(
-                  'Pair',
-                  textAlign: TextAlign.start,
+                //Profile view
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                        border: Border.all(
+                          color: AppColors.grey,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Stack(
+                            children: [
+                              ClipOval(
+                                child: Image.network(
+                                  userInfo.image!,
+                                  width: 80,
+                                  height: 80,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Positioned(
+                                right: 3,
+                                bottom: 8,
+                                child: Container(
+                                  padding: const EdgeInsets.all(2),
+                                  decoration: const BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                      color: AppColors.white),
+                                  child: Center(
+                                    child: Container(
+                                      width: 10,
+                                      height: 10,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: userInfo.status == 'ACTIVE'
+                                            ? AppColors.green
+                                            : AppColors.red,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: AppSpacing.md,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${userInfo.firstName!} ${userInfo.lastName!}',
+                                style: UITextStyle.headline4,
+                              ),
+                              const SizedBox(
+                                height: AppSpacing.xxxs,
+                              ),
+                              Text(
+                                userInfo.email!,
+                                style: UITextStyle.subtitle1,
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          const Icon(
+                            Icons.keyboard_arrow_right,
+                            size: 30,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: AppSpacing.lg,
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          color: AppColors.yellow,
+                        ),
+                        child: Text(
+                          'KYC Verification',
+                          style: UITextStyle.subtitle1
+                              .copyWith(fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                Spacer(),
-                Text(
-                  'Price',
+                const SizedBox(
+                  height: AppSpacing.xlg,
                 ),
-                Spacer(),
                 Text(
-                  '24h Change',
-                  textAlign: TextAlign.end,
+                  'Preference',
+                  style: UITextStyle.subtitle1,
+                ),
+                const SizedBox(
+                  height: AppSpacing.lg,
+                ),
+                Card(
+                  elevation: 0,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  color: AppColors.grey.shade400,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.currency_exchange),
+                        const SizedBox(
+                          width: AppSpacing.lg,
+                        ),
+                        Text(
+                          'BTC/USD',
+                          style: UITextStyle.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: AppSpacing.md,
+                ),
+                Card(
+                  elevation: 0,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  color: AppColors.grey.shade400,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.lock),
+                        const SizedBox(
+                          width: AppSpacing.lg,
+                        ),
+                        Text(
+                          'Google 2FA',
+                          style: UITextStyle.subtitle1,
+                        ),
+                        const Spacer(),
+                        const Icon(Icons.edit),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: AppSpacing.md,
+                ),
+                Card(
+                  elevation: 0,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  color: AppColors.grey.shade400,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.password),
+                        const SizedBox(
+                          width: AppSpacing.lg,
+                        ),
+                        Text(
+                          'Change Password',
+                          style: UITextStyle.subtitle1,
+                        ),
+                        const Spacer(),
+                        const Icon(Icons.edit),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: AppSpacing.md,
+                ),
+                Card(
+                  elevation: 0,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  color: AppColors.grey.shade400,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.history),
+                        const SizedBox(
+                          width: AppSpacing.lg,
+                        ),
+                        Text(
+                          'Recent Activities',
+                          style: UITextStyle.subtitle1,
+                        ),
+                        const Spacer(),
+                        const Icon(Icons.edit),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: AppSpacing.md,
+                ),
+                Card(
+                  elevation: 0,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  color: AppColors.grey.shade400,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.logout),
+                        const SizedBox(
+                          width: AppSpacing.lg,
+                        ),
+                        Text(
+                          'Log Out',
+                          style: UITextStyle.subtitle1,
+                        ),
+                        const Spacer(),
+                        const Icon(Icons.edit),
+                      ],
+                    ),
+                  ),
                 ),
               ],
-            ),
-          ),
-          // List with data
-          ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            padding: const EdgeInsets.all(16),
-            itemCount: 50, // Replace with your item count
-            itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Crypto Pair $index',
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                    const Spacer(),
-                    const Expanded(
-                      child: Text(
-                        r'$100',
-                      ),
-                    ),
-                    const Spacer(),
-                    const Expanded(
-                      child: Text(
-                        '+5%',
-                        textAlign: TextAlign.end,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
+            );
+          }
+          return const Center(
+            child: Text('Something went wrong!'),
+          );
+        },
       ),
     );
   }

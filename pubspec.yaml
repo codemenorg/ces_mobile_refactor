@@ -12,6 +12,7 @@ dependencies:
   app_ui:
     path: packages/app_ui
   bloc: ^8.1.2
+  carousel_slider: ^4.2.1
   custom_navigation_bar: ^0.8.2
   easy_splash_screen: ^1.0.4
   flutter:
@@ -37,6 +38,7 @@ flutter:
   generate: true
   assets:
     - assets/images/
+    - assets/icons/
 
 flutter_launcher_icons:
   android: "launcher_icon"

@@ -1,6 +1,5 @@
 import 'package:api/api.dart';
 import 'package:app_ui/app_ui.dart';
-import 'package:ces/l10n/l10n.dart';
 import 'package:ces/markets/markets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,9 +23,7 @@ class MarketsTradeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.marketAppBarTitle)),
       body: SafeArea(
         child: BlocConsumer<MarketTradeCubit, MarketTradeState>(
           listener: (context, state) {
@@ -46,7 +43,215 @@ class MarketsTradeView extends StatelessWidget {
             }
 
             if (state is MarketTradeLoaded) {
-              return buildContent(state.marketDetail.data!.marketTrades!);
+              var item = state.marketDetail.data!.marketTrades!;
+              return Scaffold(
+                body: CustomScrollView(
+                  shrinkWrap: true,
+                  slivers: [
+                    //appbar
+                    SliverAppBar(
+                      backgroundColor: AppColors.grey.shade400,
+                      leading: IconButton(
+                        onPressed: () {
+                          Navigator.canPop(context);
+                        },
+                        icon: const Icon(Icons.arrow_back),
+                      ), // Left icon
+                      leadingWidth: 40,
+                      centerTitle: true,
+                      title: const Row(
+                        children: [
+                          Icon(Icons.biotech),
+                          Text('usd/btc'),
+                          SizedBox(
+                            width: AppSpacing.xs,
+                          ),
+                          Icon(Icons.menu),
+                        ],
+                      ),
+                      actions: [
+                        IconButton(
+                          icon: const Icon(Icons.notifications), // Right icon
+                          onPressed: () {
+                            // Handle notification icon tap
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.star_border), // Right icon
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.file_upload_outlined,
+                          ), // Right icon
+                          onPressed: () {},
+                        ),
+                      ],
+                      floating: true,
+                      expandedHeight: 60,
+                      pinned: true,
+                    ),
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          // Big text on the left
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '0000000.00000',
+                                        style: UITextStyle.headline4,
+                                      ),
+                                      const SizedBox(
+                                        height: AppSpacing.sm,
+                                      ),
+                                      Text(
+                                        '-24.55%',
+                                        style: UITextStyle.subtitle2
+                                            .copyWith(color: AppColors.red),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // Four texts on the right
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      // First and Second Texts side by side
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '24h High',
+                                                  style: UITextStyle.caption
+                                                      .copyWith(
+                                                          color:
+                                                              AppColors.grey),
+                                                ),
+                                                Text(
+                                                  '000000000.00',
+                                                  style: UITextStyle.caption
+                                                      .copyWith(
+                                                          color:
+                                                              AppColors.black),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: AppSpacing.md,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '24h vol',
+                                                  style: UITextStyle.caption
+                                                      .copyWith(
+                                                          color:
+                                                              AppColors.grey),
+                                                ),
+                                                Text(
+                                                  '000000000.00',
+                                                  style: UITextStyle.caption
+                                                      .copyWith(
+                                                          color:
+                                                              AppColors.black),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      // Spacer to create space between the two pairs
+                                      const SizedBox(width: 16),
+                                      // Third and Fourth Texts on a new line
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '24h Low',
+                                                  style: UITextStyle.caption
+                                                      .copyWith(
+                                                          color:
+                                                              AppColors.grey),
+                                                ),
+                                                Text(
+                                                  '000000000.00',
+                                                  style: UITextStyle.caption
+                                                      .copyWith(
+                                                          color:
+                                                              AppColors.black),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: AppSpacing.md,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '24h vol',
+                                                  style: UITextStyle.caption
+                                                      .copyWith(
+                                                          color:
+                                                              AppColors.grey),
+                                                ),
+                                                Text(
+                                                  '000000000.00',
+                                                  style: UITextStyle.caption
+                                                      .copyWith(
+                                                          color:
+                                                              AppColors.black),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: AppSpacing.xlg,
+                          ),
+                          // Candle Chart
+                          Container(
+                            height: 400,
+                            // Replace this with your candle chart widget
+                            color: Colors.blue,
+                          ),
+                          const SizedBox(
+                            height: AppSpacing.lg,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
             }
 
             return const Center(
@@ -69,23 +274,25 @@ class MarketsTradeView extends StatelessWidget {
                 width: 160,
                 height: 50,
                 child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(AppColors.blue),
-                        shape: MaterialStateProperty.all(
-                            const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8))))),
-                    onPressed: () {},
-                    child: Text(
-                      'Buy',
-                      textAlign: TextAlign.center,
-                      style: UITextStyle.subtitle1.copyWith(
-                        color: AppColors.black,
-                        fontSize: 16,
-                        height: 0,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(AppColors.green),
+                    shape: MaterialStateProperty.all(
+                      const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
-                    )),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    'Buy',
+                    textAlign: TextAlign.center,
+                    style: UITextStyle.subtitle1.copyWith(
+                      color: AppColors.white,
+                      fontSize: 16,
+                      height: 0,
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(
                 width: AppSpacing.lg,
@@ -94,23 +301,25 @@ class MarketsTradeView extends StatelessWidget {
                 width: 160,
                 height: 50,
                 child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(AppColors.red),
-                        shape: MaterialStateProperty.all(
-                            const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8))))),
-                    onPressed: () {},
-                    child: Text(
-                      'Sell',
-                      textAlign: TextAlign.center,
-                      style: UITextStyle.subtitle1.copyWith(
-                        color: AppColors.black,
-                        fontSize: 16,
-                        height: 0,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(AppColors.red),
+                    shape: MaterialStateProperty.all(
+                      const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
-                    )),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    'Sell',
+                    textAlign: TextAlign.center,
+                    style: UITextStyle.subtitle1.copyWith(
+                      color: AppColors.white,
+                      fontSize: 16,
+                      height: 0,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -120,90 +329,11 @@ class MarketsTradeView extends StatelessWidget {
   }
 
   Widget buildContent(List<MarketTrade> marketTrades) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+    return const Padding(
+      padding: EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Big text on the left
-          const Row(
-            children: [
-              Expanded(
-                child: Center(
-                  child: Text(
-                    'Big Text on the Left',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-              ),
-              // Four texts on the right
-              Expanded(
-                child: Row(
-                  children: [
-                    // First and Second Texts side by side
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Center(child: Text('Text 1')),
-                          Center(child: Text('Text 2')),
-                        ],
-                      ),
-                    ),
-                    // Spacer to create space between the two pairs
-                    SizedBox(width: 16),
-                    // Third and Fourth Texts on a new line
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Center(child: Text('Text 3')),
-                          Center(child: Text('Text 4')),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: AppSpacing.xlg,
-          ),
-          // Candle Chart
-          Expanded(
-            child: Container(
-              // Replace this with your candle chart widget
-              color: Colors.blue,
-            ),
-          ),
-          // TabBar with Order Book and Market Trade
-          const Expanded(
-            child: DefaultTabController(
-              length: 2,
-              child: Column(
-                children: [
-                  TabBar(
-                    tabs: [
-                      Tab(text: 'Order Book'),
-                      Tab(text: 'Market Trade'),
-                    ],
-                  ),
-                  // Content for each tab
-                  Expanded(
-                    child: TabBarView(
-                      children: [
-                        // Order Book content
-                        // Market Trade content
-                        Center(
-                          child: Text('Market Trade Content'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+        children: [],
       ),
     );
   }

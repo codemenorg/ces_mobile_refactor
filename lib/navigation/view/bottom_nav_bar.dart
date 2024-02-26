@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:app_ui/app_ui.dart';
-import 'package:ces/counter/view/counter_page.dart';
 import 'package:ces/home/home.dart';
 import 'package:ces/markets/view/markets_page.dart';
+import 'package:ces/profile/view/profile_page.dart';
+import 'package:ces/trade/view/trade_page.dart';
+import 'package:ces/wallet/view/wallet_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../../profile/view/profile_page.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({
@@ -23,18 +23,20 @@ class NavigationScreen extends StatefulWidget {
 class _NavigationScreenState extends State<NavigationScreen> {
   //Variable for navigation Index
   int _currentIndex = 0;
+
   //Variable for navigation Color Index
   // ignore: unused_field
   int _colorIndex = 0;
 
-  final bool _isFisrtBuild = true;
+  bool _isFisrtBuild = true;
 
   final List<StatefulWidget> _screens = [
     const HomePage(),
     const MarketsPage(),
-    const CounterPage(),
-    const MarketsPage(),
+    const TradePage(),
+    const WalletPage(),
     const ProfilePage(),
+    const TradePage(),
   ];
 
   @override
@@ -113,36 +115,92 @@ class _NavigationScreenState extends State<NavigationScreen> {
               : _screens.elementAt(_currentIndex),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: AppColors.yellow,
-          selectedItemColor: AppColors.black,
+          backgroundColor: AppColors.background,
+          selectedItemColor: AppColors.yellow,
           unselectedItemColor: Colors.grey,
           type: BottomNavigationBarType.fixed,
           currentIndex: _currentIndex,
           onTap: (index) {
             setState(() {
+              _isFisrtBuild = false;
               _currentIndex = index;
             });
           },
-          items: const [
+          items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: const Icon(Icons.home),
               label: 'Home',
+              activeIcon: Container(
+                padding: const EdgeInsets.all(3),
+                decoration: const BoxDecoration(
+                  color: AppColors.yellow,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                ),
+                child: const Icon(
+                  Icons.home,
+                  color: AppColors.white,
+                ),
+              ),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shop),
+              icon: const Icon(Icons.shop),
               label: 'Markets',
+              activeIcon: Container(
+                padding: const EdgeInsets.all(3),
+                decoration: const BoxDecoration(
+                  color: AppColors.yellow,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                ),
+                child: const Icon(
+                  Icons.shop,
+                  color: AppColors.white,
+                ),
+              ),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.currency_exchange),
+              icon: const Icon(Icons.currency_exchange),
               label: 'Trade',
+              activeIcon: Container(
+                padding: const EdgeInsets.all(3),
+                decoration: const BoxDecoration(
+                  color: AppColors.yellow,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                ),
+                child: const Icon(
+                  Icons.currency_exchange,
+                  color: AppColors.white,
+                ),
+              ),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.wallet),
+              icon: const Icon(Icons.wallet),
               label: 'Wallet',
+              activeIcon: Container(
+                padding: const EdgeInsets.all(3),
+                decoration: const BoxDecoration(
+                  color: AppColors.yellow,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                ),
+                child: const Icon(
+                  Icons.wallet,
+                  color: AppColors.white,
+                ),
+              ),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
+              icon: const Icon(Icons.person),
               label: 'Profile',
+              activeIcon: Container(
+                padding: const EdgeInsets.all(3),
+                decoration: const BoxDecoration(
+                  color: AppColors.yellow,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                ),
+                child: const Icon(
+                  Icons.person,
+                  color: AppColors.white,
+                ),
+              ),
             ),
           ],
         ),

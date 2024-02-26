@@ -76,6 +76,7 @@ class ListExchangeOrder {
       };
 }
 
+// ignore: constant_identifier_names
 enum Type { TYPE_UNKNOWN }
 
 final typeValues = EnumValues({"TYPE_UNKNOWN": Type.TYPE_UNKNOWN});

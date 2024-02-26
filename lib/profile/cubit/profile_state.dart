@@ -11,4 +11,8 @@ final class ProfileLoadingError extends ProfileState {
   final String error;
 }
 
-final class ProfileLoaded extends ProfileState {}
+final class ProfileLoaded extends ProfileState {
+  ProfileLoaded(this.profile);
+
+  final Profile profile;
+}
