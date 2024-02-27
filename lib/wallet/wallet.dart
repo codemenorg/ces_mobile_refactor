@@ -1,2 +1,2 @@
-export 'cubit/wallet_cubit.dart';
+export 'cubit/wallets_cubit.dart';
 export 'view/wallet_page.dart';

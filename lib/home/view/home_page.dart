@@ -365,94 +365,100 @@ class _HomeViewState extends State<HomeView> {
                         ),
                         //other option
                         Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          padding: const EdgeInsets.all(10),
                           child: Row(
                             children: [
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: AppColors.grey.shade200,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(10),
+                              Flexible(
+                                flex: 2,
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.grey.shade200,
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
                                   ),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Epic Airdrop',
-                                          style: UITextStyle.headline6,
-                                        ),
-                                        Text(
-                                          'come and grab',
-                                          style: UITextStyle.caption
-                                              .copyWith(color: AppColors.grey),
-                                        ),
-                                        Text(
-                                          'your rewards',
-                                          style: UITextStyle.caption
-                                              .copyWith(color: AppColors.grey),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      width: AppSpacing.sm,
-                                    ),
-                                    // const Spacer(),
-                                    Image.asset(
-                                      'assets/icons/epic_airdrop.png',
-                                      width: 50,
-                                      height: 50,
-                                    ),
-                                  ],
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Epic Airdrop',
+                                            style: UITextStyle.headline6,
+                                          ),
+                                          Text(
+                                            'come and grab',
+                                            style: UITextStyle.caption.copyWith(
+                                                color: AppColors.grey),
+                                          ),
+                                          Text(
+                                            'your rewards',
+                                            style: UITextStyle.caption.copyWith(
+                                                color: AppColors.grey),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        width: AppSpacing.sm,
+                                      ),
+                                      // const Spacer(),
+                                      Image.asset(
+                                        'assets/icons/epic_airdrop.png',
+                                        width: 40,
+                                        height: 40,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               const SizedBox(
                                 width: AppSpacing.md,
                               ),
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: AppColors.grey.shade200,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(10),
+                              Flexible(
+                                flex: 2,
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.grey.shade200,
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
                                   ),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Refer Friends',
-                                          style: UITextStyle.headline6,
-                                        ),
-                                        Text(
-                                          'Up to 60%',
-                                          style: UITextStyle.caption
-                                              .copyWith(color: AppColors.grey),
-                                        ),
-                                        Text(
-                                          'commission',
-                                          style: UITextStyle.caption
-                                              .copyWith(color: AppColors.grey),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      width: AppSpacing.md,
-                                    ),
-                                    // const Spacer(),
-                                    Image.asset(
-                                      'assets/icons/refer.png',
-                                      width: 50,
-                                      height: 50,
-                                    ),
-                                  ],
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Refer Friends',
+                                            style: UITextStyle.headline6,
+                                          ),
+                                          Text(
+                                            'Up to 60%',
+                                            style: UITextStyle.caption.copyWith(
+                                                color: AppColors.grey),
+                                          ),
+                                          Text(
+                                            'commission',
+                                            style: UITextStyle.caption.copyWith(
+                                                color: AppColors.grey),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        width: AppSpacing.md,
+                                      ),
+                                      // const Spacer(),
+                                      Image.asset(
+                                        'assets/icons/refer.png',
+                                        width: 40,
+                                        height: 40,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
