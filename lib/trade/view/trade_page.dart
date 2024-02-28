@@ -2,6 +2,7 @@
 
 import 'package:app_ui/app_ui.dart';
 import 'package:ces/trade/cubit/trade_cubit.dart';
+import 'package:ces/trade/widgets/custom_form_field.dart';
 import 'package:ces/trade/widgets/trade_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,6 @@ class TradeView extends StatefulWidget {
 
 class _TradeViewState extends State<TradeView> {
   // double _sliderValue = 0;
-  String selectedOption = 'Limit';
   String dropdownAmountValue = 'Amount';
   bool validation = false;
   TextEditingController priceController = TextEditingController();
@@ -41,6 +41,11 @@ class _TradeViewState extends State<TradeView> {
   TextEditingController totalController = TextEditingController();
   TextEditingController stopController = TextEditingController();
   TextEditingController limitController = TextEditingController();
+  bool colorShift = true;
+  String buttonText = 'Buy';
+  String dropDownText = 'Limit';
+
+  final GlobalKey _formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,687 +127,600 @@ class _TradeViewState extends State<TradeView> {
                     children: [
                       // Top buttons
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            width: 80,
-                            padding: const EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              color: AppColors.green,
-                            ),
-                            child: Text(
-                              'Buy',
-                              style: UITextStyle.subtitle1
-                                  .copyWith(color: AppColors.white),
-                              textAlign: TextAlign.center,
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  colorShift = true;
+                                  buttonText = 'Buy';
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: colorShift
+                                      ? AppColors.green
+                                      : AppColors.grey.shade300,
+                                ),
+                                child: Text(
+                                  'Buy',
+                                  style: TextStyle(
+                                    color: colorShift
+                                        ? AppColors.white
+                                        : AppColors.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
                             ),
                           ),
-                          Container(
-                            width: 80,
-                            padding: const EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              color: AppColors.red,
-                            ),
-                            child: Text(
-                              'sell',
-                              style: UITextStyle.subtitle1
-                                  .copyWith(color: AppColors.white),
-                              textAlign: TextAlign.center,
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  colorShift = false;
+                                  buttonText = 'Sell';
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: colorShift
+                                      ? AppColors.grey.shade300
+                                      : AppColors.red,
+                                ),
+                                child: Text(
+                                  'Sell',
+                                  style: TextStyle(
+                                    color: colorShift
+                                        ? AppColors.black
+                                        : AppColors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(
-                        height: AppSpacing.lg,
+                        height: AppSpacing.sm,
                       ),
                       // Form with dropdown and text field
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          border: Border.all(width: .5),
-                        ),
-                        child: DropdownButton<String>(
-                          dropdownColor: AppColors.disabledSurface,
-                          padding: const EdgeInsets.only(
-                            left: 10,
-                            right: 10,
-                            top: 5,
-                            bottom: 5,
-                          ),
-                          isExpanded: true,
-                          isDense: true,
-                          elevation: 0,
-                          value: selectedOption,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedOption = newValue!;
-                            });
-                          },
-                          underline: Container(),
-                          items: <String>['Limit', 'Market', 'Stop-Limit']
-                              .map<DropdownMenuItem<String>>(
-                                (String value) => DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
+                      InkWell(
+                        onTap: () {
+                          showModalBottomSheet<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                height: 190,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
                                 ),
-                              )
-                              .toList(),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          dropDownText = 'Limit';
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      child: Container(
+                                        width: double.infinity,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 16, horizontal: 16),
+                                        child: Text(
+                                          'Limit',
+                                          style: UITextStyle.headline6
+                                              .copyWith(fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                    const Divider(),
+                                    InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          dropDownText = 'Market';
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      child: Container(
+                                        width: double.infinity,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12, horizontal: 16),
+                                        child: Text(
+                                          'Market',
+                                          style: UITextStyle.headline6
+                                              .copyWith(fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                    const Divider(),
+                                    InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          dropDownText = 'Stop-Limit';
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      child: Container(
+                                        width: double.infinity,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12, horizontal: 16),
+                                        child: Text(
+                                          'Stop-Limit',
+                                          style: UITextStyle.headline6
+                                              .copyWith(fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration:
+                              BoxDecoration(color: AppColors.grey.shade300),
+                          child: Row(
+                            children: [
+                              const Spacer(),
+                              Text(
+                                dropDownText,
+                                style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              const Spacer(),
+                              const Icon(Icons.arrow_drop_down),
+                            ],
+                          ),
                         ),
                       ),
+
                       const SizedBox(
-                        height: AppSpacing.lg,
+                        height: AppSpacing.sm,
                       ),
-                      if (selectedOption == 'Limit')
+                      if (dropDownText == 'Limit')
                         Form(
+                          key: _formKey,
                           child: Column(
                             children: [
                               // price
-                              TextFormField(
-                                autovalidateMode: validation
-                                    ? AutovalidateMode.always
-                                    : AutovalidateMode.disabled,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Price Can't be empty";
-                                  }
-                                  return null;
-                                },
-                                cursorColor: AppColors.primaryContainer,
-                                controller: priceController,
-                                keyboardType: TextInputType.text,
-                                style: const TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.blue,
-                                ),
-                                decoration: InputDecoration(
-                                  fillColor: AppColors.white,
-                                  labelText: 'Price ()',
-                                  errorStyle: const TextStyle(
-                                    letterSpacing: 1,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.red,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey.shade300,
                                     ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                    child: const Icon(
+                                      Icons.add,
                                     ),
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                  const SizedBox(
+                                    width: AppSpacing.xxs,
+                                  ),
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 40,
+                                      child: CustomFormField(
+                                        validation: validation,
+                                        controller: priceController,
+                                        labelText: 'Price ()',
+                                        validationCallBack: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return;
+                                          }
+                                          return null;
+                                        },
+                                      ),
                                     ),
                                   ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
+                                  const SizedBox(
+                                    width: AppSpacing.xxs,
+                                  ),
+                                  Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey.shade300,
                                     ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                    child: const Icon(
+                                      Icons.remove,
                                     ),
                                   ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                ),
+                                ],
                               ),
 
                               const SizedBox(
-                                height: AppSpacing.lg,
+                                height: AppSpacing.sm,
                               ),
-                              // amount
-                              TextFormField(
-                                autovalidateMode: validation
-                                    ? AutovalidateMode.always
-                                    : AutovalidateMode.disabled,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Amount Can't be empty";
-                                  }
-                                  return null;
-                                },
-                                cursorColor: AppColors.primaryContainer,
-                                controller: amountController,
-                                keyboardType: TextInputType.text,
-                                style: const TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.blue,
-                                ),
-                                decoration: InputDecoration(
-                                  fillColor: AppColors.white,
-                                  labelText: 'Amount ()',
-                                  errorStyle: const TextStyle(
-                                    letterSpacing: 1,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.red,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey.shade300,
                                     ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                    child: const Icon(
+                                      Icons.add,
                                     ),
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                  const SizedBox(
+                                    width: AppSpacing.xxs,
+                                  ),
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 40,
+                                      child: CustomFormField(
+                                        validation: validation,
+                                        controller: amountController,
+                                        labelText: 'Amount ()',
+                                        validationCallBack: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return;
+                                          }
+                                          return null;
+                                        },
+                                      ),
                                     ),
                                   ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
+                                  const SizedBox(
+                                    width: AppSpacing.xxs,
+                                  ),
+                                  Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey.shade300,
                                     ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                    child: const Icon(
+                                      Icons.remove,
                                     ),
                                   ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                ),
+                                ],
                               ),
                               const SizedBox(
-                                height: AppSpacing.lg,
+                                height: AppSpacing.sm,
                               ),
                               //total
-                              TextFormField(
-                                autovalidateMode: validation
-                                    ? AutovalidateMode.always
-                                    : AutovalidateMode.disabled,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Total Can't be empty";
-                                  }
-                                  return null;
-                                },
-                                cursorColor: AppColors.primaryContainer,
-                                controller: totalController,
-                                keyboardType: TextInputType.text,
-                                style: const TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.blue,
-                                ),
-                                decoration: InputDecoration(
-                                  fillColor: AppColors.white,
+                              SizedBox(
+                                height: 40,
+                                child: CustomFormField(
+                                  validation: validation,
+                                  controller: amountController,
                                   labelText: 'Total ()',
-                                  errorStyle: const TextStyle(
-                                    letterSpacing: 1,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.red,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
+                                  validationCallBack: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return;
+                                    }
+                                    return null;
+                                  },
                                 ),
                               ),
                             ],
                           ),
                         ),
 
-                      if (selectedOption == 'Market')
+                      if (dropDownText == 'Market')
                         Form(
+                          key: _formKey,
                           child: Column(
                             children: [
                               // price
                               AbsorbPointer(
-                                child: TextFormField(
-                                  autovalidateMode: validation
-                                      ? AutovalidateMode.always
-                                      : AutovalidateMode.disabled,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Price Can't be empty";
-                                    }
-                                    return null;
-                                  },
-                                  cursorColor: AppColors.primaryContainer,
-                                  controller: priceController,
-                                  keyboardType: TextInputType.text,
-                                  style: const TextStyle(
-                                    letterSpacing: 1,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.blue,
-                                  ),
-                                  decoration: InputDecoration(
-                                    fillColor: AppColors.grey,
-                                    labelText: 'Price ()',
-                                    errorStyle: const TextStyle(
-                                      letterSpacing: 1,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.red,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        width: 1.5,
-                                        color: AppColors.black.withOpacity(.5),
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(10),
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        width: 1.5,
-                                        color: AppColors.black.withOpacity(.5),
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(10),
-                                      ),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        width: 1.5,
-                                        color: AppColors.black.withOpacity(.5),
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(10),
-                                      ),
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        width: 1.5,
-                                        color: AppColors.black.withOpacity(.5),
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(10),
-                                      ),
-                                    ),
+                                child: SizedBox(
+                                  height: 40,
+                                  child: CustomFormField(
+                                    validation: validation,
+                                    controller: priceController,
+                                    labelText: 'Market',
+                                    validationCallBack: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return;
+                                      }
+                                      return null;
+                                    },
                                   ),
                                 ),
                               ),
 
                               const SizedBox(
-                                height: AppSpacing.lg,
+                                height: AppSpacing.xs,
                               ),
                               // amount
-                              TextFormField(
-                                autovalidateMode: validation
-                                    ? AutovalidateMode.always
-                                    : AutovalidateMode.disabled,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Amount Can't be empty";
-                                  }
-                                  return null;
-                                },
-                                cursorColor: AppColors.primaryContainer,
-                                controller: amountController,
-                                keyboardType: TextInputType.text,
-                                style: const TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.blue,
-                                ),
-                                decoration: InputDecoration(
-                                  fillColor: AppColors.white,
-                                  labelText: 'Amount ()',
-                                  errorStyle: const TextStyle(
-                                    letterSpacing: 1,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.red,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey.shade300,
                                     ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                    child: const Icon(
+                                      Icons.add,
                                     ),
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                  const SizedBox(
+                                    width: AppSpacing.xxs,
+                                  ),
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 40,
+                                      child: CustomFormField(
+                                        validation: validation,
+                                        controller: amountController,
+                                        labelText: 'Amount ()',
+                                        validationCallBack: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return;
+                                          }
+                                          return null;
+                                        },
+                                      ),
                                     ),
                                   ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
+                                  const SizedBox(
+                                    width: AppSpacing.xxs,
+                                  ),
+                                  Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey.shade300,
                                     ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                    child: const Icon(
+                                      Icons.remove,
                                     ),
                                   ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                ),
+                                ],
                               ),
                             ],
                           ),
                         ),
 
-                      if (selectedOption == 'Stop-Limit')
+                      if (dropDownText == 'Stop-Limit')
                         Form(
+                          key: _formKey,
                           child: Column(
                             children: [
                               // stop
-                              TextFormField(
-                                autovalidateMode: validation
-                                    ? AutovalidateMode.always
-                                    : AutovalidateMode.disabled,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Stop Can't be empty";
-                                  }
-                                  return null;
-                                },
-                                cursorColor: AppColors.primaryContainer,
-                                controller: stopController,
-                                keyboardType: TextInputType.text,
-                                style: const TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.blue,
-                                ),
-                                decoration: InputDecoration(
-                                  fillColor: AppColors.white,
-                                  labelText: 'Stop ()',
-                                  errorStyle: const TextStyle(
-                                    letterSpacing: 1,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.red,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey.shade300,
                                     ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                    child: const Icon(
+                                      Icons.add,
                                     ),
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                  const SizedBox(
+                                    width: AppSpacing.xxs,
+                                  ),
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 40,
+                                      child: CustomFormField(
+                                        validation: validation,
+                                        controller: stopController,
+                                        labelText: 'Stop ()',
+                                        validationCallBack: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return;
+                                          }
+                                          return null;
+                                        },
+                                      ),
                                     ),
                                   ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
+                                  const SizedBox(
+                                    width: AppSpacing.xxs,
+                                  ),
+                                  Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey.shade300,
                                     ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                    child: const Icon(
+                                      Icons.remove,
                                     ),
                                   ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                ),
+                                ],
                               ),
 
                               const SizedBox(
-                                height: AppSpacing.lg,
+                                height: AppSpacing.xs,
                               ),
                               // limit
-                              TextFormField(
-                                autovalidateMode: validation
-                                    ? AutovalidateMode.always
-                                    : AutovalidateMode.disabled,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Limit Can't be empty";
-                                  }
-                                  return null;
-                                },
-                                cursorColor: AppColors.primaryContainer,
-                                controller: limitController,
-                                keyboardType: TextInputType.text,
-                                style: const TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.blue,
-                                ),
-                                decoration: InputDecoration(
-                                  fillColor: AppColors.white,
-                                  labelText: 'Limit ()',
-                                  errorStyle: const TextStyle(
-                                    letterSpacing: 1,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.red,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey.shade300,
                                     ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                    child: const Icon(
+                                      Icons.add,
                                     ),
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                  const SizedBox(
+                                    width: AppSpacing.xxs,
+                                  ),
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 40,
+                                      child: CustomFormField(
+                                        validation: validation,
+                                        controller: limitController,
+                                        labelText: 'Limit ()',
+                                        validationCallBack: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return;
+                                          }
+                                          return null;
+                                        },
+                                      ),
                                     ),
                                   ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
+                                  const SizedBox(
+                                    width: AppSpacing.xs,
+                                  ),
+                                  Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey.shade300,
                                     ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                    child: const Icon(
+                                      Icons.remove,
                                     ),
                                   ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                ),
+                                ],
                               ),
 
                               const SizedBox(
-                                height: AppSpacing.lg,
+                                height: AppSpacing.xs,
                               ),
                               // amount
-                              TextFormField(
-                                autovalidateMode: validation
-                                    ? AutovalidateMode.always
-                                    : AutovalidateMode.disabled,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Amount Can't be empty";
-                                  }
-                                  return null;
-                                },
-                                cursorColor: AppColors.primaryContainer,
-                                controller: amountController,
-                                keyboardType: TextInputType.text,
-                                style: const TextStyle(
-                                  letterSpacing: 1,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.blue,
-                                ),
-                                decoration: InputDecoration(
-                                  fillColor: AppColors.white,
-                                  labelText: 'Amount ()',
-                                  errorStyle: const TextStyle(
-                                    letterSpacing: 1,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.red,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey.shade300,
                                     ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                    child: const Icon(
+                                      Icons.add,
                                     ),
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                  const SizedBox(
+                                    width: AppSpacing.xxs,
+                                  ),
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 40,
+                                      child: CustomFormField(
+                                        validation: validation,
+                                        controller: totalController,
+                                        labelText: 'Amount ()',
+                                        validationCallBack: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return;
+                                          }
+                                          return null;
+                                        },
+                                      ),
                                     ),
                                   ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
+                                  const SizedBox(
+                                    width: AppSpacing.xs,
+                                  ),
+                                  Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey.shade300,
                                     ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
+                                    child: const Icon(
+                                      Icons.remove,
                                     ),
                                   ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1.5,
-                                      color: AppColors.black.withOpacity(.5),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                ),
+                                ],
                               ),
 
                               const SizedBox(
-                                height: AppSpacing.lg,
+                                height: AppSpacing.xs,
                               ),
                               // total
-                              CustomFormField(
-                                validation: validation,
-                                controller: totalController,
-                                validationText: '',
-                                labelText: '',
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey.shade300,
+                                    ),
+                                    child: const Icon(
+                                      Icons.add,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: AppSpacing.xxs,
+                                  ),
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 40,
+                                      child: CustomFormField(
+                                        validation: validation,
+                                        controller: totalController,
+                                        labelText: 'Total ()',
+                                        validationCallBack: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return;
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: AppSpacing.xs,
+                                  ),
+                                  Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey.shade300,
+                                    ),
+                                    child: const Icon(
+                                      Icons.remove,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ),
 
                       const SizedBox(
-                        height: AppSpacing.lg,
+                        height: AppSpacing.sm,
                       ),
                       Container(
                         width: 80,
                         padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          color: AppColors.green,
+                        decoration: BoxDecoration(
+                          color: buttonText == 'Buy'
+                              ? AppColors.green
+                              : AppColors.red,
                         ),
                         child: Text(
-                          'Buy',
-                          style: UITextStyle.subtitle1
-                              .copyWith(color: AppColors.white),
+                          buttonText == 'Buy' ? 'Buy' : 'Sell',
+                          style: UITextStyle.subtitle1.copyWith(
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -830,90 +748,6 @@ class _TradeViewState extends State<TradeView> {
       child: Text(
         text,
         maxLines: 2,
-      ),
-    );
-  }
-}
-
-class CustomFormField extends StatelessWidget {
-  const CustomFormField({
-    required this.validation,
-    required this.controller,
-    required this.validationText,
-    required this.labelText,
-    super.key,
-  });
-
-  final bool validation;
-  final String validationText;
-  final String labelText;
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      autovalidateMode:
-          validation ? AutovalidateMode.always : AutovalidateMode.disabled,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return validationText;
-        }
-        return null;
-      },
-      cursorColor: AppColors.primaryContainer,
-      controller: controller,
-      keyboardType: TextInputType.text,
-      style: const TextStyle(
-        letterSpacing: 1,
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
-        color: AppColors.blue,
-      ),
-      decoration: InputDecoration(
-        fillColor: AppColors.white,
-        labelText: labelText,
-        errorStyle: const TextStyle(
-          letterSpacing: 1,
-          fontSize: 12,
-          fontWeight: FontWeight.w400,
-          color: AppColors.red,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 1.5,
-            color: AppColors.black.withOpacity(.5),
-          ),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 1.5,
-            color: AppColors.black.withOpacity(.5),
-          ),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 1.5,
-            color: AppColors.black.withOpacity(.5),
-          ),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
-        border: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 1.5,
-            color: AppColors.black.withOpacity(.5),
-          ),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
       ),
     );
   }

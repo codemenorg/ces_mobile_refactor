@@ -170,7 +170,7 @@ class WalletView extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(
-                              width: AppSpacing.lg,
+                              width: AppSpacing.md,
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,7 +188,7 @@ class WalletView extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(
-                              width: AppSpacing.lg,
+                              width: AppSpacing.xxs,
                             ),
                             const Icon(
                               Icons.keyboard_arrow_right,
