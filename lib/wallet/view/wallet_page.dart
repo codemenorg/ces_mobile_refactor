@@ -22,8 +22,15 @@ class _WalletPageState extends State<WalletPage> {
   }
 }
 
-class WalletView extends StatelessWidget {
+class WalletView extends StatefulWidget {
   const WalletView({super.key});
+
+  @override
+  State<WalletView> createState() => _WalletViewState();
+}
+
+class _WalletViewState extends State<WalletView> {
+  bool obscureText = false;
 
   @override
   Widget build(BuildContext context) {
@@ -47,18 +54,16 @@ class WalletView extends StatelessWidget {
           if (state is WalletsLoaded) {
             var item = state.walletList.data!.wallet;
             return ListView(
-              // padding: const EdgeInsets.all(20),
               shrinkWrap: true,
               children: [
                 Container(
-                  // height: 160,
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(20),
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(15),
                       bottomRight: Radius.circular(15),
                     ),
-                    color: AppColors.primaryContainer,
+                    color: AppColors.yellow,
                   ),
                   child: Row(
                     children: [
@@ -72,13 +77,27 @@ class WalletView extends StatelessWidget {
                                 style: UITextStyle.subtitle1,
                               ),
                               Text(
-                                '(${item!.first.wallet!.currencySymbol})',
+                                '(${item!.first.wallet!.currencySymbol!})',
                                 style: UITextStyle.caption,
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    obscureText = !obscureText;
+                                  });
+                                },
+                                icon: Icon(
+                                  obscureText
+                                      ? Icons.visibility_off
+                                      : Icons.remove_red_eye,
+                                ),
                               ),
                             ],
                           ),
                           Text(
-                            item.first.wallet!.balance.toString(),
+                            obscureText
+                                ? '*****'
+                                : item.first.wallet!.balance.toString(),
                             style: UITextStyle.headline2,
                           ),
                           const SizedBox(
@@ -95,8 +114,9 @@ class WalletView extends StatelessWidget {
                                 ),
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(
-                                      Radius.circular(5)),
-                                  border: Border.all(color: AppColors.yellow),
+                                    Radius.circular(5),
+                                  ),
+                                  border: Border.all(),
                                 ),
                                 child: Text(
                                   'Deposit',
@@ -115,8 +135,9 @@ class WalletView extends StatelessWidget {
                                 ),
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(
-                                      Radius.circular(5)),
-                                  border: Border.all(color: AppColors.yellow),
+                                    Radius.circular(5),
+                                  ),
+                                  border: Border.all(),
                                 ),
                                 child: Text(
                                   'Withdraw',
@@ -146,7 +167,6 @@ class WalletView extends StatelessWidget {
                   itemBuilder: (context, index) {
                     var walletItem = item[index].wallet;
                     return Card(
-                      margin: const EdgeInsets.all(5),
                       child: Container(
                         padding: const EdgeInsets.all(20),
                         child: Row(
@@ -160,36 +180,53 @@ class WalletView extends StatelessWidget {
                               placeholder: (context, url) => Container(
                                 color: AppColors.yellow,
                               ),
-                              errorWidget: (context, url, error) => Container(
+                              errorWidget: (context, url, error) =>
+                                  const ColoredBox(
                                 color: AppColors.white,
-                                child: const Icon(
+                                child: Icon(
                                   Icons.error,
                                   color: AppColors.red,
                                   size: 10,
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              width: AppSpacing.md,
-                            ),
+                            const SizedBox(width: AppSpacing.md),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(walletItem.currencySymbol.toString()),
-                                Text(walletItem.name.toString()),
+                                Text(
+                                  walletItem.currencySymbol.toString(),
+                                  style: UITextStyle.caption
+                                      .copyWith(fontWeight: FontWeight.w700),
+                                ),
+                                Text(
+                                  walletItem.name.toString(),
+                                  style: UITextStyle.caption
+                                      .copyWith(fontWeight: FontWeight.w500),
+                                ),
                               ],
                             ),
                             const Spacer(),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text(walletItem.balance.toString()),
-                                Text(walletItem.onOrder.toString()),
+                                Text(
+                                  obscureText
+                                      ? '*****'
+                                      : walletItem.balance.toString(),
+                                  style: UITextStyle.caption
+                                      .copyWith(fontWeight: FontWeight.w700),
+                                ),
+                                Text(
+                                  obscureText
+                                      ? '*****'
+                                      : walletItem.onOrder.toString(),
+                                  style: UITextStyle.caption
+                                      .copyWith(fontWeight: FontWeight.w500),
+                                ),
                               ],
                             ),
-                            const SizedBox(
-                              width: AppSpacing.xxs,
-                            ),
+                            const SizedBox(width: AppSpacing.md),
                             const Icon(
                               Icons.keyboard_arrow_right,
                               size: 30,

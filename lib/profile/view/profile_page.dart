@@ -166,7 +166,7 @@ class ProfileView extends StatelessWidget {
                       Radius.circular(10),
                     ),
                   ),
-                  color: AppColors.grey.shade400,
+                  color: AppColors.grey.shade300,
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Row(
@@ -193,7 +193,7 @@ class ProfileView extends StatelessWidget {
                       Radius.circular(10),
                     ),
                   ),
-                  color: AppColors.grey.shade400,
+                  color: AppColors.grey.shade300,
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Row(
@@ -222,7 +222,7 @@ class ProfileView extends StatelessWidget {
                       Radius.circular(10),
                     ),
                   ),
-                  color: AppColors.grey.shade400,
+                  color: AppColors.grey.shade300,
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Row(
@@ -251,7 +251,7 @@ class ProfileView extends StatelessWidget {
                       Radius.circular(10),
                     ),
                   ),
-                  color: AppColors.grey.shade400,
+                  color: AppColors.grey.shade300,
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Row(
@@ -280,7 +280,7 @@ class ProfileView extends StatelessWidget {
                       Radius.circular(10),
                     ),
                   ),
-                  color: AppColors.grey.shade400,
+                  color: AppColors.grey.shade300,
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Row(

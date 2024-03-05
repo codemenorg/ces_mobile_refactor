@@ -386,35 +386,35 @@ class _HomeViewState extends State<HomeView> {
                                         children: [
                                           Text(
                                             'Epic Airdrop',
-                                            style: UITextStyle.headline6,
+                                            style: UITextStyle.headline6
+                                                .copyWith(fontSize: 16),
                                           ),
                                           Text(
                                             'come and grab',
                                             style: UITextStyle.caption.copyWith(
-                                                color: AppColors.grey),
+                                              color: AppColors.grey,
+                                            ),
                                           ),
                                           Text(
                                             'your rewards',
                                             style: UITextStyle.caption.copyWith(
-                                                color: AppColors.grey),
+                                              color: AppColors.grey,
+                                            ),
                                           ),
                                         ],
                                       ),
-                                      const SizedBox(
-                                        width: AppSpacing.sm,
-                                      ),
-                                      // const Spacer(),
+                                      const Spacer(),
                                       Image.asset(
                                         'assets/icons/epic_airdrop.png',
-                                        width: 40,
-                                        height: 40,
+                                        width: 50,
+                                        height: 50,
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
                               const SizedBox(
-                                width: AppSpacing.md,
+                                width: AppSpacing.xs,
                               ),
                               Flexible(
                                 flex: 2,
@@ -434,28 +434,28 @@ class _HomeViewState extends State<HomeView> {
                                         children: [
                                           Text(
                                             'Refer Friends',
-                                            style: UITextStyle.headline6,
+                                            style: UITextStyle.headline6
+                                                .copyWith(fontSize: 16),
                                           ),
                                           Text(
                                             'Up to 60%',
                                             style: UITextStyle.caption.copyWith(
-                                                color: AppColors.grey),
+                                              color: AppColors.grey,
+                                            ),
                                           ),
                                           Text(
                                             'commission',
                                             style: UITextStyle.caption.copyWith(
-                                                color: AppColors.grey),
+                                              color: AppColors.grey,
+                                            ),
                                           ),
                                         ],
                                       ),
-                                      const SizedBox(
-                                        width: AppSpacing.md,
-                                      ),
-                                      // const Spacer(),
+                                      const Spacer(),
                                       Image.asset(
                                         'assets/icons/refer.png',
-                                        width: 40,
-                                        height: 40,
+                                        width: 50,
+                                        height: 50,
                                       ),
                                     ],
                                   ),

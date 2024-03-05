@@ -51,7 +51,7 @@ class MarketsView extends StatelessWidget {
           if (state is MarketsLoaded) {
             return Scaffold(
               appBar: AppBar(
-                backgroundColor: AppColors.grey.shade400,
+                backgroundColor: AppColors.grey.shade300,
                 title: Text(l10n.marketAppBarTitle),
                 actions: [
                   IconButton(onPressed: () {}, icon: const Icon(Icons.search)),

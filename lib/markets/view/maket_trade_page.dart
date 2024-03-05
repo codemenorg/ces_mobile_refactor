@@ -4,6 +4,8 @@ import 'package:ces/markets/markets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../trade/widgets/trade_drawer.dart';
+
 class MarketsTradePage extends StatelessWidget {
   const MarketsTradePage({required this.marketId, super.key});
   static const route = '/market-detail';
@@ -18,8 +20,19 @@ class MarketsTradePage extends StatelessWidget {
   }
 }
 
-class MarketsTradeView extends StatelessWidget {
+class MarketsTradeView extends StatefulWidget {
   const MarketsTradeView({super.key});
+
+  @override
+  State<MarketsTradeView> createState() => _MarketsTradeViewState();
+}
+
+class _MarketsTradeViewState extends State<MarketsTradeView> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _openDrawer(DrawerContent drawer) {
+    _scaffoldKey.currentState?.openDrawer();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,142 +58,182 @@ class MarketsTradeView extends StatelessWidget {
             if (state is MarketTradeLoaded) {
               var item = state.marketDetail.data!.marketTrades!;
               return Scaffold(
-                body: CustomScrollView(
-                  shrinkWrap: true,
-                  slivers: [
-                    //appbar
-                    SliverAppBar(
-                      backgroundColor: AppColors.grey.shade400,
-                      leading: IconButton(
-                        onPressed: () {
-                          Navigator.canPop(context);
-                        },
-                        icon: const Icon(Icons.arrow_back),
-                      ), // Left icon
-                      leadingWidth: 40,
-                      centerTitle: true,
-                      title: const Row(
-                        children: [
-                          Icon(Icons.biotech),
-                          Text('usd/btc'),
-                          SizedBox(
-                            width: AppSpacing.xs,
-                          ),
-                          Icon(Icons.menu),
-                        ],
-                      ),
-                      actions: [
-                        IconButton(
-                          icon: const Icon(Icons.notifications), // Right icon
-                          onPressed: () {
-                            // Handle notification icon tap
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.star_border), // Right icon
-                          onPressed: () {},
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.file_upload_outlined,
-                          ), // Right icon
-                          onPressed: () {},
-                        ),
-                      ],
-                      floating: true,
-                      expandedHeight: 60,
-                      pinned: true,
-                    ),
-                    SliverList(
-                      delegate: SliverChildListDelegate(
-                        [
-                          // Big text on the left
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '0000000.00000',
-                                        style: UITextStyle.headline4,
-                                      ),
-                                      const SizedBox(
-                                        height: AppSpacing.sm,
-                                      ),
-                                      Text(
-                                        '-24.55%',
-                                        style: UITextStyle.subtitle2
-                                            .copyWith(color: AppColors.red),
-                                      ),
-                                    ],
+                drawer: const Drawer(
+                  child: DrawerContent(),
+                ),
+                key: _scaffoldKey,
+                body: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: Column(
+                    children: [
+                      //AppBar
+                      Container(
+                        height: 60,
+                        padding: const EdgeInsets.all(10),
+                        color: AppColors.grey.shade300,
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.arrow_back_outlined,
+                              weight: 500,
+                            ),
+                            const SizedBox(
+                              width: AppSpacing.md,
+                            ),
+                            Container(
+                              height: 15,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  right: BorderSide(
+                                    width: 2,
+                                    color: AppColors.grey.shade400,
                                   ),
                                 ),
-                                // Four texts on the right
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      // First and Second Texts side by side
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '24h High',
-                                                  style: UITextStyle.caption
-                                                      .copyWith(
-                                                          color:
-                                                              AppColors.grey),
-                                                ),
-                                                Text(
-                                                  '000000000.00',
-                                                  style: UITextStyle.caption
-                                                      .copyWith(
-                                                          color:
-                                                              AppColors.black),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: AppSpacing.md,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '24h vol',
-                                                  style: UITextStyle.caption
-                                                      .copyWith(
-                                                          color:
-                                                              AppColors.grey),
-                                                ),
-                                                Text(
-                                                  '000000000.00',
-                                                  style: UITextStyle.caption
-                                                      .copyWith(
-                                                          color:
-                                                              AppColors.black),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                              ),
+                            ),
+                            const SizedBox(
+                              width: AppSpacing.md,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Future.delayed(
+                                    const Duration(microseconds: 200), () {
+                                  _openDrawer(const DrawerContent());
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.currency_pound_outlined),
+                                  Text(
+                                    'USD/BTC',
+                                    style: UITextStyle.subtitle1
+                                        .copyWith(fontWeight: FontWeight.w700),
+                                  ),
+                                  const SizedBox(
+                                    width: AppSpacing.sm,
+                                  ),
+                                  Image.asset(
+                                    'assets/icons/menu.png',
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Spacer(),
+                            const Icon(
+                              Icons.notifications_none,
+                              color: AppColors.grey,
+                              size: 30,
+                            ),
+                            const SizedBox(
+                              width: AppSpacing.md,
+                            ),
+                            const Icon(
+                              Icons.star_border,
+                              color: AppColors.grey,
+                              size: 30,
+                            ),
+                            const SizedBox(
+                              width: AppSpacing.md,
+                            ),
+                            const Icon(
+                              Icons.file_upload_outlined,
+                              color: AppColors.grey,
+                              size: 30,
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height -
+                            80, // Adjusted height
+                        child: ListView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '0000000.00000',
+                                          style: UITextStyle.headline4,
                                         ),
-                                      ),
-                                      // Spacer to create space between the two pairs
-                                      const SizedBox(width: 16),
-                                      // Third and Fourth Texts on a new line
-                                      Expanded(
-                                        child: Column(
+                                        const SizedBox(
+                                          height: AppSpacing.sm,
+                                        ),
+                                        Text(
+                                          '-24.55%',
+                                          style: UITextStyle.subtitle2
+                                              .copyWith(color: AppColors.red),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    '24h High',
+                                                    style: UITextStyle.caption
+                                                        .copyWith(
+                                                      color: AppColors.grey,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '000000000.00',
+                                                    style: UITextStyle.caption
+                                                        .copyWith(
+                                                      color: AppColors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: AppSpacing.md,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    '24h vol',
+                                                    style: UITextStyle.caption
+                                                        .copyWith(
+                                                      color: AppColors.grey,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '000000000.00',
+                                                    style: UITextStyle.caption
+                                                        .copyWith(
+                                                      color: AppColors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Column(
                                           children: [
                                             Column(
                                               crossAxisAlignment:
@@ -190,15 +243,15 @@ class MarketsTradeView extends StatelessWidget {
                                                   '24h Low',
                                                   style: UITextStyle.caption
                                                       .copyWith(
-                                                          color:
-                                                              AppColors.grey),
+                                                    color: AppColors.grey,
+                                                  ),
                                                 ),
                                                 Text(
                                                   '000000000.00',
                                                   style: UITextStyle.caption
                                                       .copyWith(
-                                                          color:
-                                                              AppColors.black),
+                                                    color: AppColors.black,
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -213,43 +266,96 @@ class MarketsTradeView extends StatelessWidget {
                                                   '24h vol',
                                                   style: UITextStyle.caption
                                                       .copyWith(
-                                                          color:
-                                                              AppColors.grey),
+                                                    color: AppColors.grey,
+                                                  ),
                                                 ),
                                                 Text(
                                                   '000000000.00',
                                                   style: UITextStyle.caption
                                                       .copyWith(
-                                                          color:
-                                                              AppColors.black),
+                                                    color: AppColors.black,
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                           ],
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: AppSpacing.xlg,
-                          ),
-                          // Candle Chart
-                          Container(
-                            height: 400,
-                            // Replace this with your candle chart widget
-                            color: Colors.blue,
-                          ),
-                          const SizedBox(
-                            height: AppSpacing.lg,
-                          ),
-                        ],
+                            const SizedBox(
+                              height: AppSpacing.xlg,
+                            ),
+                            Container(
+                              height: 400,
+                              color: Colors.blue,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 4,
+                                  color: AppColors.grey.shade300,
+                                ),
+                              ),
+                            ),
+                            DefaultTabController(
+                              length: 2,
+                              child: Column(
+                                children: [
+                                  TabBar(
+                                    tabs: const [
+                                      Tab(text: 'Order Book'),
+                                      Tab(text: 'Market Trade'),
+                                    ],
+                                    labelColor: AppColors.black,
+                                    unselectedLabelColor: AppColors.grey,
+                                  ),
+                                  SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height - 80,
+                                    child: TabBarView(
+                                      children: [
+                                        // Order Book Tab
+                                        ListView.builder(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: 29,
+                                          itemBuilder: (context, index) {
+                                            return ListTile(
+                                              title: Text(
+                                                  'Order Book Item $index'),
+                                            );
+                                          },
+                                        ),
+
+                                        // Market Trade Tab
+                                        ListView.builder(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: 29,
+                                          itemBuilder: (context, index) {
+                                            return ListTile(
+                                              title: Text(
+                                                  'Market Trade Item $index'),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }
@@ -270,55 +376,29 @@ class MarketsTradeView extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 160,
-                height: 50,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(AppColors.green),
-                    shape: MaterialStateProperty.all(
-                      const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                      ),
-                    ),
-                  ),
-                  onPressed: () {},
-                  child: Text(
-                    'Buy',
-                    textAlign: TextAlign.center,
-                    style: UITextStyle.subtitle1.copyWith(
-                      color: AppColors.white,
-                      fontSize: 16,
-                      height: 0,
-                    ),
-                  ),
+              Container(
+                width: MediaQuery.of(context).size.width / 2.3,
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(color: AppColors.green),
+                child: Text(
+                  'Buy',
+                  textAlign: TextAlign.center,
+                  style: UITextStyle.subtitle1.copyWith(
+                      color: AppColors.white, fontWeight: FontWeight.w600),
                 ),
               ),
               const SizedBox(
                 width: AppSpacing.lg,
               ),
-              SizedBox(
-                width: 160,
-                height: 50,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(AppColors.red),
-                    shape: MaterialStateProperty.all(
-                      const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                      ),
-                    ),
-                  ),
-                  onPressed: () {},
-                  child: Text(
-                    'Sell',
-                    textAlign: TextAlign.center,
-                    style: UITextStyle.subtitle1.copyWith(
-                      color: AppColors.white,
-                      fontSize: 16,
-                      height: 0,
-                    ),
-                  ),
+              Container(
+                width: MediaQuery.of(context).size.width / 2.3,
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(color: AppColors.red),
+                child: Text(
+                  'Sell',
+                  textAlign: TextAlign.center,
+                  style: UITextStyle.subtitle1.copyWith(
+                      color: AppColors.white, fontWeight: FontWeight.w600),
                 ),
               ),
             ],
