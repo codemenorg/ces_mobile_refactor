@@ -7,9 +7,14 @@ environment:
   sdk: ">=3.2.6 <4.0.0"
 
 dependencies:
+  api:
+    path: packages/api
   app_ui:
     path: packages/app_ui
   bloc: ^8.1.2
+  cached_network_image: ^3.3.1
+  carousel_slider: ^4.2.1
+  custom_navigation_bar: ^0.8.2
   easy_splash_screen: ^1.0.4
   flutter:
     sdk: flutter
@@ -20,6 +25,9 @@ dependencies:
   flutter_native_splash: ^2.3.10
   hydrated_bloc: ^9.1.3
   intl: ^0.18.1
+  meta: ^1.10.0
+  syncfusion_flutter_sliders: ^24.2.8
+  top_modal_sheet: ^2.1.0
 
 dev_dependencies:
   bloc_test: ^9.1.5
@@ -33,6 +41,7 @@ flutter:
   generate: true
   assets:
     - assets/images/
+    - assets/icons/
 
 flutter_launcher_icons:
   android: "launcher_icon"
